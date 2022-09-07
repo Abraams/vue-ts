@@ -1,27 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <TodoList :todos="todos" />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import TodoList from '@/components/TodoList.vue';
+import { ITodo } from '@/core/todo';
+import TodoServiceFabric from '@/services/todo/Todo.service.fabric';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld,
-  },
+const todos = ref<ITodo[]>([]);
+
+onMounted(async () => {
+  todos.value = [await TodoServiceFabric.create(1).getTodoById(125)];
 });
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
